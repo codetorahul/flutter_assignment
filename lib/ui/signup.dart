@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import 'login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -191,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                     padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, Constants.loginPage);
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       child: const Text(
                         "Already have an account? Login",

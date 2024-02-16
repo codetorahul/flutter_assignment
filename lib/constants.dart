@@ -3,4 +3,6 @@ class Constants {
   static var loginPage = "Login";
   static var signUpPage = "Signup";
   static var homePage = "Home";
+  static var profilePage = "Profile";
+  static var editProfilePage = "EditProfile";
 }

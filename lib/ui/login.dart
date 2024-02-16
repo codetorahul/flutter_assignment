@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_projects/ui/common_ui.dart';
 
 import '../constants.dart';
 
@@ -107,27 +108,15 @@ class _LoginState extends State<Login> {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10.0, 30, 10.0, 30.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 60,
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          side: MaterialStateProperty.all<BorderSide>(
-                              BorderSide.none),
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            Navigator.pushNamed(context, Constants.homePage);
-                          }
-                        },
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    child: commonButton(
+                        function: () => {
+                              if (formKey.currentState!.validate())
+                                {
+                                  Navigator.pushNamed(
+                                      context, Constants.homePage)
+                                }
+                            },
+                        label: "Login"),
                   ),
                   Padding(
                       padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
