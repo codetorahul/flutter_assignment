@@ -1,11 +1,11 @@
-class UserModel {
+class UserData {
   String _firstName = "";
   String _lastName = "";
   String _userName = "";
   String _email = "";
   String _password = "";
   String _confirmPassword = "";
-  UserModel();
+  UserData();
 
   String get confirmPassword => _confirmPassword;
 

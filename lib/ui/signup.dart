@@ -1,8 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-import 'login.dart';
+import '../utils/constants.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
