@@ -22,10 +22,10 @@ class BasicPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => UserBloc(),
       child: MaterialApp(
-        initialRoute: Constants.editProfilePage,
+        initialRoute: Constants.welcomePage,
         routes: {
           Constants.welcomePage: (context) => const WelcomePage(),
-          Constants.loginPage: (context) => const Login(),
+          Constants.loginPage: (context) => Login(),
           Constants.homePage: (context) => const HomePage(),
           Constants.signUpPage: (context) => const SignUp(),
           Constants.profilePage: (context) => const ProfilePage(),

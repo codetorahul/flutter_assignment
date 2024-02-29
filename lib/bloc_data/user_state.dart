@@ -1,4 +1,4 @@
-part of '../bloc_data/user_bloc.dart';
+part of 'user_bloc.dart';
 
 class UserState {
   UserData userData;
@@ -11,4 +11,12 @@ class InitialState extends UserState {
 
 class UpdatedState extends UserState {
   UpdatedState(UserData userData) : super(userData: userData);
+}
+
+class LoadingState extends UserState {
+  LoadingState({required super.userData});
+}
+
+class LoginSuccessState extends UserState {
+  LoginSuccessState({required super.userData});
 }

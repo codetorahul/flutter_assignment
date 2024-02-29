@@ -1,15 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'user_data.dart';
+import '../model/user_data.dart';
 
-part '../model/user_state.dart';
 part 'user_events.dart';
+part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvents, UserState> {
   UserBloc() : super(InitialState(UserData())) {
-    on<LoginEvent>((event, emit) {
-      _loginUserFunction;
-    });
+    on<LoginEvent>(
+      (event, emit) async {
+        print("::: Destination - LOGIN bEFORE DELAY");
+
+        state.userData = event.userData;
+        emit(LoadingState(userData: state.userData));
+        await Future.delayed(const Duration(seconds: 10), () {
+          print("::: Destination - LOGIN AFTER DELAY");
+          emit(LoginSuccessState(userData: state.userData));
+        });
+      },
+    );
     on<AddProfileEvent>((event, emit) {
       _addProfileFunction;
     });
@@ -19,8 +28,15 @@ class UserBloc extends Bloc<UserEvents, UserState> {
   }
 
   void _loginUserFunction(LoginEvent event, Emitter<UserState> emit) {
+    print("::: Destination - LOGIN bEFORE DELAY");
+
     state.userData = event.userData;
-    emit(UpdatedState(state.userData));
+    emit(LoadingState(userData: state.userData));
+    Future.delayed(const Duration(seconds: 10000));
+
+    print("::: Destination - LOGIN AFTER DELAY");
+
+    emit(LoginSuccessState(userData: state.userData));
   }
 
   void _addProfileFunction(AddProfileEvent event, Emitter<UserState> emit) {

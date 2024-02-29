@@ -2,19 +2,21 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_projects/bloc_data/user_bloc.dart';
-import 'package:flutter_projects/bloc_data/user_data.dart';
-import 'package:flutter_projects/ui/common_ui.dart';
 
+import '../model/user_data.dart';
 import '../utils/constants.dart';
+import 'common_ui.dart';
 
 class Login extends StatelessWidget {
-  String email = "";
-  String password="";
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey();
     var userBloc = BlocProvider.of<UserBloc>(context);
+    print("::: Destination - Login User state: ${userBloc.state.toString()}");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
@@ -61,7 +63,7 @@ class Login extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
                     child: TextFormField(
-                      onFieldSubmitted: (String value) {email = value;},
+                      controller: emailController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -90,9 +92,7 @@ class Login extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
                     child: TextFormField(
-                      onFieldSubmitted: (String value) {
-                        password = value;
-                      },
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -108,27 +108,46 @@ class Login extends StatelessWidget {
                       },
                     ),
                   ),
-                  BlocBuilder(
-                    builder: (BuildContext context, state) {
-                      UserData userdata;
+                  BlocConsumer<UserBloc, UserState>(
+                      builder: (BuildContext context, state) {
+                    print("::: Destination - Builder - $state");
+
+                    if (state is LoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.amber,
+                        ),
+                      );
+                    } else {
                       return Padding(
                         padding:
                             const EdgeInsets.fromLTRB(10.0, 30, 10.0, 30.0),
                         child: commonButton(
-                            function: () => {
-                                  if (formKey.currentState!.validate())
-                                    {
-                                       userdata = UserData()
-                                      userdata.email = email;
-                                          Navigator
-                                          .pushNamed(
-                                              context, Constants.homePage)
-                                    }
-                                },
+                            function: () {
+                              if (formKey.currentState!.validate()) {
+                                print("::: Destination - On Click");
+
+                                // saving data
+                                UserData userData = UserData();
+                                userData.email =
+                                    emailController.value.toString();
+                                userData.password =
+                                    passwordController.value.toString();
+                                userBloc.add(LoginEvent(userData: userData));
+                              }
+                            },
                             label: "Login"),
                       );
-                    },
-                  ),
+                    }
+                  }, listener: (BuildContext context, state) {
+                    print("::: Destination - Listener - $state");
+
+                    if (state is LoginSuccessState) {
+                      // navigate
+                      print("::: Destination - Listener");
+                      Navigator.pushNamed(context, Constants.homePage);
+                    }
+                  }),
                   Padding(
                       padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                       child: GestureDetector(

@@ -4,14 +4,6 @@ class UserData {
   String _userName = "";
   String _email = "";
   String _password = "";
-  String _confirmPassword = "";
-  UserData();
-
-  String get confirmPassword => _confirmPassword;
-
-  set confirmPassword(String value) {
-    _confirmPassword = value;
-  }
 
   String get password => _password;
 
