@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_projects/bloc_data/user_bloc.dart';
 
 class AppBarWidget extends StatelessWidget {
   @override
@@ -16,41 +17,48 @@ class AppBarWidget extends StatelessWidget {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 10.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "MAIN TEXT dskjfdsjfslfklsdkjflksdjklfjskldjfkdsfjlsdjflkjdsklfjlskdjflksdjlkfks",
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    maxLines: 1,
+      child: BlocBuilder<UserBloc, UserState>(
+        builder: (BuildContext context, state) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 10.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.userData.userName.isNotEmpty
+                            ? state.userData.userName
+                            : state.userData.email,
+                        style: const TextStyle(
+                            fontSize: 25.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 10.0),
+                      const Text("Sub Text",
+                          style:
+                              TextStyle(fontSize: 18.0, color: Colors.white)),
+                    ],
                   ),
-                  SizedBox(height: 10.0),
-                  Text("Sub Text",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white)),
-                ],
-              ),
+                ),
+                const Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Icon(
-                Icons.menu,
-                color: Colors.white,
-                size: 30.0,
-              ),
-            )
-          ],
-        ),
+          );
+        },
       ),
     );
   }

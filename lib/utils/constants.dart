@@ -5,4 +5,6 @@ class Constants {
   static var homePage = "Home";
   static var profilePage = "Profile";
   static var editProfilePage = "EditProfile";
+
+  static const int DELAY_TIME = 5;
 }

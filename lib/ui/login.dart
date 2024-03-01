@@ -129,10 +129,12 @@ class Login extends StatelessWidget {
 
                                 // saving data
                                 UserData userData = UserData();
-                                userData.email =
-                                    emailController.value.toString();
+                                userData.email = emailController.value.text;
                                 userData.password =
-                                    passwordController.value.toString();
+                                    passwordController.value.text;
+                                print(
+                                    "::: Destination - ${userData.email}  & ${userData.userName}");
+
                                 userBloc.add(LoginEvent(userData: userData));
                               }
                             },
@@ -142,7 +144,7 @@ class Login extends StatelessWidget {
                   }, listener: (BuildContext context, state) {
                     print("::: Destination - Listener - $state");
 
-                    if (state is LoginSuccessState) {
+                    if (state is SuccessState) {
                       // navigate
                       print("::: Destination - Listener");
                       Navigator.pushNamed(context, Constants.homePage);

@@ -1,6 +1,4 @@
 class UserData {
-  String _firstName = "";
-  String _lastName = "";
   String _userName = "";
   String _email = "";
   String _password = "";
@@ -21,17 +19,5 @@ class UserData {
 
   set userName(String value) {
     _userName = value;
-  }
-
-  String get lastName => _lastName;
-
-  set lastName(String value) {
-    _lastName = value;
-  }
-
-  String get firstName => _firstName;
-
-  set firstName(String value) {
-    _firstName = value;
   }
 }

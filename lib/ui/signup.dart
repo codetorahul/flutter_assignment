@@ -1,23 +1,23 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_projects/bloc_data/user_bloc.dart';
 
+import '../model/user_data.dart';
 import '../utils/constants.dart';
+import 'common_ui.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignUp extends StatelessWidget {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  @override
-  State<SignUp> createState() {
-    return _SignUpState();
-  }
-}
-
-class _SignUpState extends State<SignUp> {
   GlobalKey<FormState> formKey = GlobalKey();
   String _passwordText = "";
 
   @override
   Widget build(BuildContext context) {
+    var userBloc = BlocProvider.of<UserBloc>(context);
     return Form(
       key: formKey,
       child: Scaffold(
@@ -64,6 +64,7 @@ class _SignUpState extends State<SignUp> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
                     child: TextFormField(
+                      controller: usernameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -90,6 +91,7 @@ class _SignUpState extends State<SignUp> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
                     child: TextFormField(
+                      controller: emailController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -118,6 +120,7 @@ class _SignUpState extends State<SignUp> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
                     child: TextFormField(
+                        controller: passwordController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -162,30 +165,39 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10.0, 30, 10.0, 30.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 60,
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                          side: MaterialStateProperty.all<BorderSide>(
-                              BorderSide.none),
-                        ),
-                        onPressed: () {
-                          var state = formKey.currentState;
-                          if (state != null && state.validate()) {
-                            Navigator.pushNamed(context, Constants.homePage);
-                          }
-                        },
-                        child: const Text(
-                          "Sign up",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                  BlocConsumer<UserBloc, UserState>(
+                    builder: (BuildContext context, state) {
+                      if (state is LoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.amber,
+                          ),
+                        );
+                      } else {
+                        return Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 30, 10.0, 30.0),
+                          child: commonButton(
+                              function: () {
+                                var state = formKey.currentState;
+                                if (state != null && state.validate()) {
+                                  var userData = UserData();
+                                  userData.userName = usernameController.text;
+                                  userData.email = emailController.text;
+                                  userData.password = passwordController.text;
+                                  userBloc
+                                      .add(AddProfileEvent(userData: userData));
+                                }
+                              },
+                              label: "Sign up"),
+                        );
+                      }
+                    },
+                    listener: (BuildContext context, UserState? state) {
+                      if (state is SuccessState) {
+                        Navigator.pushNamed(context, Constants.homePage);
+                      }
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),

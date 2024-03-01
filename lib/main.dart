@@ -27,7 +27,7 @@ class BasicPage extends StatelessWidget {
           Constants.welcomePage: (context) => const WelcomePage(),
           Constants.loginPage: (context) => Login(),
           Constants.homePage: (context) => const HomePage(),
-          Constants.signUpPage: (context) => const SignUp(),
+          Constants.signUpPage: (context) => SignUp(),
           Constants.profilePage: (context) => const ProfilePage(),
           Constants.editProfilePage: (context) => const EditProfilePage(),
         },

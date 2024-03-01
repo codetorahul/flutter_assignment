@@ -14,9 +14,10 @@ class UpdatedState extends UserState {
 }
 
 class LoadingState extends UserState {
-  LoadingState({required super.userData});
+  LoadingState() : super(userData: UserData());
 }
 
-class LoginSuccessState extends UserState {
-  LoginSuccessState({required super.userData});
+class SuccessState extends UserState {
+  UserData userData;
+  SuccessState({required this.userData}) : super(userData: UserData());
 }
